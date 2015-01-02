@@ -44,15 +44,16 @@ static const float BUMP_TIME_2 = 0.1;
     self = [super init];
     if (!self) return nil;
     
-    [self setView:view andCount:0 atPosition:TopRight];
+    [self setView:view andCount:0];
     
     return self;
 }
 
 //%%% give this a view and an initial count (0 hides the notification circle)
 // and it will make a hub for you
--(void)setView:(UIView *)view andCount:(int)startCount atPosition: (enum notificationPosition)position
-{    
+-(void)setView:(UIView *)view andCount:(int)startCount
+{
+    CGRect frame = view.frame;
     isIndeterminateMode = NO;
     
     redCircle = [[UIView alloc]init];
@@ -65,7 +66,7 @@ static const float BUMP_TIME_2 = 0.1;
     [countLabel setTextAlignment:NSTextAlignmentCenter];
     countLabel.textColor = [UIColor whiteColor];
     
-    [self setCircleAtPosition:position inView:view];
+    [self setCircleAtFrame:CGRectMake(frame.size.width-(DIAMETER*2/3), -DIAMETER/3, DIAMETER, DIAMETER)];
     
     [view addSubview:redCircle];
     [view addSubview:countLabel];
@@ -86,8 +87,8 @@ static const float BUMP_TIME_2 = 0.1;
     [countLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:frame.size.width/2]];
 }
 
-//%%% set the location of the notification circle to a view corner
--(void) setCircleAtPosition:(enum notificationPosition)position inView:(UIView*)view{
+//%%% set the location of the notification circle in a view corner
+-(void) setCircleAtCorner:(enum notificationPosition)position inView:(UIView*)view {
     switch (position)
     {
         case TopLeft:
